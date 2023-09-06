@@ -7,6 +7,6 @@ public class FastWumpus extends Moveable{
 
     @Override
     protected void moveUp() {
-        this.position.
+        //this.position.
     }
 }

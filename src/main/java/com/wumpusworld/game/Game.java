@@ -1,20 +1,44 @@
 package com.wumpusworld.game;
 
 public class Game {
-    int rounds = 0;
+    private int rounds = 0;
     private final int lines;
     private final int columns;
-    Tile[][] board = this.fillBoard();
-    Agent agent = new Agent();
-    Wumpus wumpus;
-    FastWumpus fastWumpus;
-    final String greetings = "Olá, seja bem vindo ao Mundo de Wumpus, selecione uma opção para começar a jogar!";
+    private Tile[][] board;
+    private Agent agent = new Agent();
+    private Wumpus wumpus;
+    private FastWumpus fastWumpus;
+    private final String greetings = "Olá, seja bem vindo ao Mundo de Wumpus, selecione uma opção para começar a jogar!";
 
-    Game(int lines, int columns) {
+    public Game(int lines, int columns) {
         this.lines = lines;
         this.columns = columns;
         this.setupMonsters();
         this.agent = new Agent();
+        this.board = fillBoard();
+    }
+
+    public int getLines() {
+        return lines;
+    }
+
+    public int getColumns() {
+        return columns;
+    }
+
+    public Tile[][] getBoard() {
+        return board;
+    }
+
+    public void printBoard() {
+        for (Tile[] tilesLine : this.board){
+            System.out.print("[");
+            for (Tile tile : tilesLine) {
+                System.out.print(tile.isBadSmell());
+                System.out.print(",");
+            }
+            System.out.println("]");
+        }
     }
 
     private Tile[][] fillBoard() {

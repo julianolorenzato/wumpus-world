@@ -7,21 +7,24 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Window extends JFrame implements ActionListener {
+public class GameWindow extends JFrame implements ActionListener {
+    int lines, columns;
     Game game;
+    BoardPanel boardPanel;
 
-    Window() {
+    public GameWindow(int lines, int columns) {
         this.setVisible(true);
         this.setSize(1280, 720);
         this.setLocationRelativeTo(null);
-        this.setLayout(new FlowLayout());
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        game = new Game(lines, columns);
+        boardPanel = new BoardPanel(game);
+        createWindow();
     }
-    
-    public static void main(String[] args) {
-        Window window = new Window();
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        StartMenu startMenu = new StartMenu(window);
+
+    public void createWindow() {
+        this.add(boardPanel);
+
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.wumpusworld.ui;
 
+import com.wumpusworld.game.Game;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -63,9 +65,7 @@ public class MatchSettings extends JFrame implements ActionListener {
         if (e.getSource() == start) {
             lines = Integer.parseInt(linesField.getText());
             columns = Integer.parseInt(columnsField.getText());
-            /*
-            TODO code logic;
-            */
+            GameWindow gameWindow = new GameWindow(lines, columns);
             super.dispose();
         }
 

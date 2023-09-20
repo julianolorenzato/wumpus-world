@@ -30,6 +30,10 @@ public class Game {
         return board;
     }
 
+    public Agent getAgent() {
+        return agent;
+    }
+
     public void printBoard() {
         for (Tile[] tilesLine : this.board){
             System.out.print("[");
@@ -74,7 +78,7 @@ public class Game {
         return agentPosition.samePosition(wumpusPosition) || agentPosition.samePosition(fastWumpusPosition) || this.agent.life == 0;
     }
 
-    void moveAgentUp() {
+    public void moveAgentUp() {
         if (agent.getPosition().getLine() == this.lines - 1) {
             throw new Error("O agente já se encontra no extremo norte do mapa");
         }
@@ -82,7 +86,7 @@ public class Game {
         this.agent.moveUp();
     }
 
-    void moveAgentDown() {
+    public void moveAgentDown() {
         if (agent.getPosition().getLine() == 0) {
             throw new Error("O agente já se encontra no extremo sul do mapa");
         }
@@ -90,7 +94,7 @@ public class Game {
         this.agent.moveDown();
     }
 
-    void moveAgentRight() {
+    public void moveAgentRight() {
         if (agent.getPosition().getLine() == this.columns - 1) {
             throw new Error("O agente já se encontra no extremo leste do sul");
         }
@@ -98,11 +102,12 @@ public class Game {
         this.agent.moveRight();
     }
 
-    void moveAgentLeft() {
+    public void moveAgentLeft() {
         if (agent.getPosition().getLine() == 0) {
             throw new Error("O agente já se encontra no extremo oeste do sul");
         }
 
         this.agent.moveLeft();
     }
+
 }

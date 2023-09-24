@@ -12,9 +12,12 @@ public class ButtonPanel extends JPanel implements ActionListener {
     JButton up, down, left, right, flashlightUp, flashlightDown, flashlightLeft, flashlightRight;
     JPanel movementPanel, actionPanel;
     BoardPanel boardPanel;
-    public ButtonPanel(Game game, BoardPanel boardPanel) {
+    InfoPanel infoPanel;
+
+    public ButtonPanel(Game game, BoardPanel boardPanel, InfoPanel infoPanel) {
         this.game = game;
         this.boardPanel = boardPanel;
+        this.infoPanel = infoPanel;
         this.setBackground(Color.lightGray);
         this.setSize(500, 400);
         createPanel();
@@ -62,42 +65,50 @@ public class ButtonPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == up) {
             this.game.moveAgentUp();
-            this.boardPanel.updateWindow();
+            this.boardPanel.updatePanel();
+            this.infoPanel.updatePanel();
         }
 
         if (e.getSource() == down) {
             this.game.moveAgentDown();
-            this.boardPanel.updateWindow();
+            this.boardPanel.updatePanel();
+            this.infoPanel.updatePanel();
         }
 
         if (e.getSource() == left) {
             this.game.moveAgentLeft();
-            this.boardPanel.updateWindow();
+            this.boardPanel.updatePanel();
+            this.infoPanel.updatePanel();
         }
 
         if (e.getSource() == right) {
             this.game.moveAgentRight();
-            this.boardPanel.updateWindow();
+            this.boardPanel.updatePanel();
+            this.infoPanel.updatePanel();
         }
 
         if (e.getSource() == flashlightUp) {
             this.game.revealTilesUp();
-            this.boardPanel.updateWindow();
+            this.boardPanel.updatePanel();
+            this.infoPanel.updatePanel();
         }
 
         if (e.getSource() == flashlightDown) {
             this.game.revealTilesDown();
-            this.boardPanel.updateWindow();
+            this.boardPanel.updatePanel();
+            this.infoPanel.updatePanel();
         }
 
         if (e.getSource() == flashlightRight) {
             this.game.revealTilesRight();
-            this.boardPanel.updateWindow();
+            this.boardPanel.updatePanel();
+            this.infoPanel.updatePanel();
         }
 
         if (e.getSource() == flashlightLeft) {
             this.game.revealTilesLeft();
-            this.boardPanel.updateWindow();
+            this.boardPanel.updatePanel();
+            this.infoPanel.updatePanel();
         }
     }
 }

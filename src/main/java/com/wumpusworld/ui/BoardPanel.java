@@ -19,10 +19,10 @@ public class BoardPanel extends JPanel {
         this.setSize(670, 670);
         this.setLayout(new GridLayout(lines, columns, 3, 3));
         this.setBackground(Color.lightGray);
-        updateWindow();
+        updatePanel();
     }
 
-    public void updateWindow() {
+    public void updatePanel() {
         this.removeAll();
 
         Position agent = game.getAgent().getPosition();

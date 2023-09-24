@@ -27,7 +27,7 @@ public class GameWindow extends JFrame implements ActionListener {
         game = new Game(lines, columns);
         boardPanel = new BoardPanel(game);
         infoPanel = new InfoPanel(game);
-        buttonPanel = new ButtonPanel(game, boardPanel);
+        buttonPanel = new ButtonPanel(game, boardPanel, infoPanel);
         createWindow();
     }
 

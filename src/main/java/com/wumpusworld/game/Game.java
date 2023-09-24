@@ -1,5 +1,9 @@
 package com.wumpusworld.game;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
 public class Game {
     private int rounds = 0;
     private final int lines;
@@ -45,8 +49,28 @@ public class Game {
         }
     }
 
+    private Map<String, int[]> randomCoordinates() {
+        Map<String, int[]> coordinates = new HashMap<>();
+        coordinates.put("x", new int[8]);
+        coordinates.put("y", new int[8]);
+        for (int i = 0; i < 7; i++) {
+            int line, column;
+
+            do {
+                line = new Random().nextInt(this.lines - 1);
+                column = new Random().nextInt(this.columns - 1);
+
+                // Avoid coordinate(14,0)
+            } while (line == 14 && column == 0);
+
+            coordinates.get("x")[i] = line;
+            coordinates.get("y")[i] = column;
+        }
+
+        return coordinates;
+    }
     private Tile[][] fillBoard() {
-        Tile[][] tiles = new Tile[this.lines][this.lines];
+        Tile[][] tiles = new Tile[this.lines][this.columns];
 
         for (int i = 0; i <  this.lines; i++) {
             for (int j = 0; j < this.columns; j++) {
@@ -79,7 +103,7 @@ public class Game {
     }
 
     public void moveAgentUp() {
-        if (agent.getPosition().getLine() == this.lines - 1) {
+        if (agent.getPosition().getLine() == 0) {
             throw new Error("O agente já se encontra no extremo norte do mapa");
         }
 
@@ -87,7 +111,7 @@ public class Game {
     }
 
     public void moveAgentDown() {
-        if (agent.getPosition().getLine() == 0) {
+        if (agent.getPosition().getLine() == this.lines - 1) {
             throw new Error("O agente já se encontra no extremo sul do mapa");
         }
 
@@ -95,15 +119,15 @@ public class Game {
     }
 
     public void moveAgentRight() {
-        if (agent.getPosition().getLine() == this.columns - 1) {
-            throw new Error("O agente já se encontra no extremo leste do sul");
+        if (agent.getPosition().getColumn() == this.columns - 1) {
+            throw new Error("O agente já se encontra no extremo leste do mapa");
         }
 
         this.agent.moveRight();
     }
 
     public void moveAgentLeft() {
-        if (agent.getPosition().getLine() == 0) {
+        if (agent.getPosition().getColumn() == 0) {
             throw new Error("O agente já se encontra no extremo oeste do sul");
         }
 

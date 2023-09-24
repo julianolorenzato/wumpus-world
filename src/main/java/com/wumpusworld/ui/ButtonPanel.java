@@ -11,8 +11,10 @@ public class ButtonPanel extends JPanel implements ActionListener {
     Game game;
     JButton up, down, left, right;
     JPanel movementPanel, actionPanel;
-    public ButtonPanel(Game game) {
+    BoardPanel boardPanel;
+    public ButtonPanel(Game game, BoardPanel boardPanel) {
         this.game = game;
+        this.boardPanel = boardPanel;
         this.setBackground(Color.lightGray);
         this.setSize(500, 400);
         createPanel();
@@ -49,18 +51,22 @@ public class ButtonPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == up) {
             game.moveAgentUp();
+            this.boardPanel.updateWindow();
         }
 
         if (e.getSource() == down) {
             game.moveAgentDown();
+            this.boardPanel.updateWindow();
         }
 
         if (e.getSource() == left) {
             game.moveAgentLeft();
+            this.boardPanel.updateWindow();
         }
 
         if (e.getSource() == right) {
             game.moveAgentRight();
+            this.boardPanel.updateWindow();
         }
     }
 }

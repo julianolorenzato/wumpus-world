@@ -20,11 +20,11 @@ public class Position {
     }
 
     void toUp() {
-        this.line++;
+        this.line--;
     }
 
     void toDown() {
-        this.line--;
+        this.line++;
     }
 
     void toRight() {
@@ -42,14 +42,14 @@ public class Position {
             line = new Random().nextInt(maxLine);
             column = new Random().nextInt(maxCol);
 
-            // Avoid coordinate(0,0)
-        } while (line == 0 && column == 0);
+            // Avoid coordinate(14,0)
+        } while (line == 14 && column == 0);
 
         return new Position(line, column);
     }
 
     static Position originPosition() {
-        return new Position(0, 0);
+        return new Position(14, 0);
     }
 
     public boolean samePosition(Position pos) {

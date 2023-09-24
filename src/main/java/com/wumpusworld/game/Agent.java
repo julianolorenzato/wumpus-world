@@ -11,6 +11,14 @@ public class Agent extends Moveable {
         super(Position.originPosition());
     }
 
+    public int getLife() {
+        return life;
+    }
+
+    public Set<Item> getItems() {
+        return items;
+    }
+
     void addItem(Item item) {
         if (this.items.size() == 3) {
             throw new Error("O agente pode carregar no máximo 3 items");

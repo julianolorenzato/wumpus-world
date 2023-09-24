@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 
 public class ButtonPanel extends JPanel implements ActionListener {
     Game game;
-    JButton up, down, left, right;
+    JButton up, down, left, right, flashlightUp, flashlightDown, flashlightLeft, flashlightRight;
     JPanel movementPanel, actionPanel;
     BoardPanel boardPanel;
     public ButtonPanel(Game game, BoardPanel boardPanel) {
@@ -21,16 +21,9 @@ public class ButtonPanel extends JPanel implements ActionListener {
     }
 
     public void createPanel() {
+        // movementPanel definition
         JPanel movementPanel = new JPanel();
         this.add(movementPanel);
-
-    /*
-        JPanel actionPanel = new JPanel();
-        actionPanel.setLayout(new GridLayout());
-        this.add(actionPanel);
-     */
-
-        // movementPanel definition
         movementPanel.setLayout(new BorderLayout());
         movementPanel.setSize(200,200);
         up = new JButton("ir para cima");
@@ -45,27 +38,65 @@ public class ButtonPanel extends JPanel implements ActionListener {
         movementPanel.add(down, BorderLayout.SOUTH);
         movementPanel.add(left, BorderLayout.WEST);
         movementPanel.add(right, BorderLayout.EAST);
+
+        // action panel definition
+        JPanel actionPanel = new JPanel();
+        actionPanel.setLayout(new BorderLayout());
+        actionPanel.setSize(200,200);
+        this.add(actionPanel);
+        flashlightUp = new JButton("usar lanterna para cima");
+        flashlightDown = new JButton("usar lanterna para baixo");
+        flashlightLeft = new JButton("usar lanterna para esquerda");
+        flashlightRight = new JButton("usar lanterna para direita");
+        flashlightUp.addActionListener(this);
+        flashlightDown.addActionListener(this);
+        flashlightLeft.addActionListener(this);
+        flashlightRight.addActionListener(this);
+        actionPanel.add(flashlightUp, BorderLayout.NORTH);
+        actionPanel.add(flashlightDown, BorderLayout.SOUTH);
+        actionPanel.add(flashlightLeft, BorderLayout.WEST);
+        actionPanel.add(flashlightRight, BorderLayout.EAST);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == up) {
-            game.moveAgentUp();
+            this.game.moveAgentUp();
             this.boardPanel.updateWindow();
         }
 
         if (e.getSource() == down) {
-            game.moveAgentDown();
+            this.game.moveAgentDown();
             this.boardPanel.updateWindow();
         }
 
         if (e.getSource() == left) {
-            game.moveAgentLeft();
+            this.game.moveAgentLeft();
             this.boardPanel.updateWindow();
         }
 
         if (e.getSource() == right) {
-            game.moveAgentRight();
+            this.game.moveAgentRight();
+            this.boardPanel.updateWindow();
+        }
+
+        if (e.getSource() == flashlightUp) {
+            this.game.revealTilesUp();
+            this.boardPanel.updateWindow();
+        }
+
+        if (e.getSource() == flashlightDown) {
+            this.game.revealTilesDown();
+            this.boardPanel.updateWindow();
+        }
+
+        if (e.getSource() == flashlightRight) {
+            this.game.revealTilesRight();
+            this.boardPanel.updateWindow();
+        }
+
+        if (e.getSource() == flashlightLeft) {
+            this.game.revealTilesLeft();
             this.boardPanel.updateWindow();
         }
     }

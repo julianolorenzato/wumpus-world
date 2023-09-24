@@ -1,4 +1,4 @@
 package com.wumpusworld.game;
 
-public class Gold {
+public class Bow extends Item{
 }

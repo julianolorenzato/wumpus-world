@@ -9,6 +9,7 @@ public class Agent extends Moveable {
 
     Agent() {
         super(Position.originPosition());
+        this.items.add(new Flashlight());
     }
 
     public int getLife() {

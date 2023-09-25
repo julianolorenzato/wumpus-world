@@ -12,6 +12,7 @@ public class GameWindow extends JFrame implements ActionListener {
     BoardPanel boardPanel;
     InfoPanel infoPanel;
     ButtonPanel buttonPanel;
+    Ending ending;
 
     public GameWindow(int lines, int columns) {
         this.setVisible(true);
@@ -21,9 +22,10 @@ public class GameWindow extends JFrame implements ActionListener {
         this.setResizable(false);
         this.getContentPane().setLayout(null);
         game = new Game(lines, columns);
+        this.ending = new Ending(game, this);
         boardPanel = new BoardPanel(game);
         infoPanel = new InfoPanel(game);
-        buttonPanel = new ButtonPanel(game, boardPanel, infoPanel);
+        buttonPanel = new ButtonPanel(game, boardPanel, infoPanel, ending);
         createWindow();
     }
 

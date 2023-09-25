@@ -13,9 +13,11 @@ public class ButtonPanel extends JPanel implements ActionListener {
     JPanel movementPanel, actionPanel, pitPanel, arrowPanel;
     BoardPanel boardPanel;
     InfoPanel infoPanel;
+    Ending ending;
 
-    public ButtonPanel(Game game, BoardPanel boardPanel, InfoPanel infoPanel) {
+    public ButtonPanel(Game game, BoardPanel boardPanel, InfoPanel infoPanel, Ending ending) {
         this.game = game;
+        this.ending = ending;
         this.boardPanel = boardPanel;
         this.infoPanel = infoPanel;
         this.setBackground(Color.lightGray);
@@ -95,24 +97,36 @@ public class ButtonPanel extends JPanel implements ActionListener {
             this.game.moveAgentUp();
             this.boardPanel.updatePanel();
             this.infoPanel.updatePanel();
+            if (this.game.isWin() || this.game.isGameOver()) {
+                this.ending.updateWindow();
+            }
         }
 
         if (e.getSource() == down) {
             this.game.moveAgentDown();
             this.boardPanel.updatePanel();
             this.infoPanel.updatePanel();
+            if (this.game.isWin() || this.game.isGameOver()) {
+                this.ending.updateWindow();
+            }
         }
 
         if (e.getSource() == left) {
             this.game.moveAgentLeft();
             this.boardPanel.updatePanel();
             this.infoPanel.updatePanel();
+            if (this.game.isWin() || this.game.isGameOver()) {
+                this.ending.updateWindow();
+            }
         }
 
         if (e.getSource() == right) {
             this.game.moveAgentRight();
             this.boardPanel.updatePanel();
             this.infoPanel.updatePanel();
+            if (this.game.isWin() || this.game.isGameOver()) {
+                this.ending.updateWindow();
+            }
         }
 
         if (e.getSource() == flashlightUp) {

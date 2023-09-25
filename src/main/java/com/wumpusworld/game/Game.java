@@ -136,15 +136,11 @@ public class Game {
         this.fastWumpus = new FastWumpus(fastWumpusPosition);
     }
 
-    boolean isGameOver() {
-        Position agentPosition = agent.getPosition();
-        Position wumpusPosition = wumpus.getPosition();
-        Position fastWumpusPosition = fastWumpus.getPosition();
-
-        return agentPosition.samePosition(wumpusPosition) || agentPosition.samePosition(fastWumpusPosition) || this.agent.life == 0;
+    public boolean isGameOver() {
+        return this.agent.life <= 0;
     }
 
-    boolean isWin() {
+    public boolean isWin() {
         boolean haveGoldNugget = this.agent.items.stream().anyMatch(item -> item instanceof GoldNugget);
         Position agentPosition = this.agent.getPosition();
 

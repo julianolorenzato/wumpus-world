@@ -8,14 +8,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class GameWindow extends JFrame implements ActionListener {
-    int lines, columns;
     Game game;
     BoardPanel boardPanel;
     InfoPanel infoPanel;
     ButtonPanel buttonPanel;
-    JPanel panel;
-    JButton up, down, left, right;
-    JLabel welcome, life, items;
 
     public GameWindow(int lines, int columns) {
         this.setVisible(true);

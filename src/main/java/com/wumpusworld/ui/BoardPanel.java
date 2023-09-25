@@ -42,9 +42,9 @@ public class BoardPanel extends JPanel {
                         int fastWumpusLine = game.getFastWumpus().getPosition().getLine();
                         int fastWumpusCol = game.getFastWumpus().getPosition().getColumn();
 
-                        if (wumpusLine == i && wumpusCol == j) {
+                        if (wumpusLine == i && wumpusCol == j && !game.getWumpus().isDead()) {
                             tile.setBackground(Color.red);
-                        } else if (fastWumpusLine == i && fastWumpusCol == j) {
+                        } else if (fastWumpusLine == i && fastWumpusCol == j && !game.getFastWumpus().isDead()) {
                             tile.setBackground(Color.red);
                         } else if (currTile.getGold() != null) {
                             tile.setBackground(Color.yellow);

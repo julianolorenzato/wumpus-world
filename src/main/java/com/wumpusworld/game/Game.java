@@ -3,7 +3,6 @@ package com.wumpusworld.game;
 import java.util.*;
 
 public class Game {
-    // private int rounds = 0;
     private final int lines;
     private final int columns;
     private Tile[][] board;
@@ -41,21 +40,6 @@ public class Game {
 
     public Agent getAgent() {
         return agent;
-    }
-
-    //    public void nextRound() {
-    //        this.rounds++;
-    //    }
-
-    public void printBoard() {
-        for (Tile[] tilesLine : this.board) {
-            System.out.print("[");
-            for (Tile tile : tilesLine) {
-                System.out.print(tile.isBreeze());
-                System.out.print(",");
-            }
-            System.out.println("]");
-        }
     }
 
     private Map<String, int[]> randomCoordinates() {
@@ -158,6 +142,13 @@ public class Game {
         Position fastWumpusPosition = fastWumpus.getPosition();
 
         return agentPosition.samePosition(wumpusPosition) || agentPosition.samePosition(fastWumpusPosition) || this.agent.life == 0;
+    }
+
+    boolean isWin() {
+        boolean haveGoldNugget = this.agent.items.stream().anyMatch(item -> item instanceof GoldNugget);
+        Position agentPosition = this.agent.getPosition();
+
+        return agentPosition.getLine() == this.lines - 1 && agentPosition.getColumn() == 0 && haveGoldNugget;
     }
 
     public void moveAgentUp() {
@@ -351,7 +342,7 @@ public class Game {
         } catch (Exception e) {
         }
 
-        if (this.agent.getPosition().samePosition(this.wumpus.getPosition())) {
+        if (this.agent.getPosition().samePosition(this.wumpus.getPosition()) && !wumpus.isDead()) {
             this.agent.life -= 100;
         }
     }
@@ -392,7 +383,7 @@ public class Game {
         } catch (Exception e) {
         }
 
-        if (this.agent.getPosition().samePosition(this.fastWumpus.getPosition())) {
+        if (this.agent.getPosition().samePosition(this.fastWumpus.getPosition()) && !fastWumpus.isDead()) {
             this.agent.life -= 50;
         }
     }
@@ -431,11 +422,59 @@ public class Game {
         }
     }
 
-    public void throwArrow() {
+    public void throwArrow(int direction) {
+        int agentLine = this.agent.getPosition().getLine();
+        int agentCol = this.agent.getPosition().getColumn();
+
+        int wumpusLine = this.wumpus.getPosition().getLine();
+        int wumpusCol = this.wumpus.getPosition().getColumn();
+
+        int fastWumpusLine = this.fastWumpus.getPosition().getLine();
+        int fastWumpusCol = this.fastWumpus.getPosition().getColumn();
+
         Optional<Item> result = this.agent.items.stream().filter(item -> item instanceof Arrow).findFirst();
 
         if (result.isPresent()) {
-            // THROW ARROW
+            this.agent.items.remove(result.get());
+
+            switch (direction) {
+                case 0:
+                    if (agentLine - 1 == wumpusLine && agentCol == wumpusCol) {
+                        wumpus.setDead(true);
+                    }
+
+                    if (agentLine - 1 == fastWumpusLine && agentCol == fastWumpusCol) {
+                        fastWumpus.setDead(true);
+                    }
+                    break;
+                case 1:
+                    if (agentLine + 1 == wumpusLine && agentCol == wumpusCol) {
+                        wumpus.setDead(true);
+                    }
+
+                    if (agentLine + 1 == fastWumpusLine && agentCol == fastWumpusCol) {
+                        fastWumpus.setDead(true);
+                    }
+                    break;
+                case 2:
+                    if (agentLine == wumpusLine && agentCol - 1 == wumpusCol) {
+                        wumpus.setDead(true);
+                    }
+
+                    if (agentLine == fastWumpusLine && agentCol - 1 == fastWumpusCol) {
+                        fastWumpus.setDead(true);
+                    }
+                    break;
+                case 3:
+                    if (agentLine == wumpusLine && agentCol + 1 == wumpusCol) {
+                        wumpus.setDead(true);
+                    }
+
+                    if (agentLine == fastWumpusLine && agentCol + 1 == fastWumpusCol) {
+                        fastWumpus.setDead(true);
+                    }
+                    break;
+            }
         }
     }
 }

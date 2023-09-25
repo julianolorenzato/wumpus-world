@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 
 public class ButtonPanel extends JPanel implements ActionListener {
     Game game;
-    JButton up, down, left, right, flashlightUp, flashlightDown, flashlightLeft, flashlightRight, closePit, makeArrow, arrowUp, ArrowDown, ArrowLeft, ArrowRight;
+    JButton up, down, left, right, flashlightUp, flashlightDown, flashlightLeft, flashlightRight, closePit, makeArrow, arrowUp, arrowDown, arrowLeft, arrowRight;
     JPanel movementPanel, actionPanel, pitPanel, arrowPanel;
     BoardPanel boardPanel;
     InfoPanel infoPanel;
@@ -67,13 +67,26 @@ public class ButtonPanel extends JPanel implements ActionListener {
         closePit = new JButton("fechar poço próximo");
         makeArrow = new JButton("criar nova flecha");
         closePit.addActionListener(this);
-        pitPanel.add(closePit, BorderLayout.CENTER);
+        makeArrow.addActionListener(this);
+        pitPanel.add(closePit, BorderLayout.EAST);
+        pitPanel.add(makeArrow, BorderLayout.WEST);
 
         // arrow panel definition
         JPanel arrowPanel = new JPanel();
         arrowPanel.setLayout(new BorderLayout());
         this.add(arrowPanel);
-
+        arrowUp = new JButton("flecha para cima");
+        arrowDown = new JButton("flecha para baixo");
+        arrowLeft = new JButton("flecha para esquerda");
+        arrowRight = new JButton("flecha para direita");
+        arrowUp.addActionListener(this);
+        arrowDown.addActionListener(this);
+        arrowLeft.addActionListener(this);
+        arrowRight.addActionListener(this);
+        arrowPanel.add(arrowUp, BorderLayout.NORTH);
+        arrowPanel.add(arrowDown, BorderLayout.SOUTH);
+        arrowPanel.add(arrowLeft, BorderLayout.WEST);
+        arrowPanel.add(arrowRight, BorderLayout.EAST);
     }
 
     @Override
@@ -128,6 +141,36 @@ public class ButtonPanel extends JPanel implements ActionListener {
 
         if (e.getSource() == closePit) {
             this.game.closePit();
+            this.boardPanel.updatePanel();
+            this.infoPanel.updatePanel();
+        }
+
+        if (e.getSource() == makeArrow) {
+            this.game.makeArrow();
+            this.boardPanel.updatePanel();
+            this.infoPanel.updatePanel();
+        }
+
+        if (e.getSource() == arrowUp) {
+            this.game.throwArrow(0);
+            this.boardPanel.updatePanel();
+            this.infoPanel.updatePanel();
+        }
+
+        if (e.getSource() == arrowDown) {
+            this.game.throwArrow(1);
+            this.boardPanel.updatePanel();
+            this.infoPanel.updatePanel();
+        }
+
+        if (e.getSource() == arrowLeft) {
+            this.game.throwArrow(2);
+            this.boardPanel.updatePanel();
+            this.infoPanel.updatePanel();
+        }
+
+        if (e.getSource() == arrowRight) {
+            this.game.throwArrow(3);
             this.boardPanel.updatePanel();
             this.infoPanel.updatePanel();
         }

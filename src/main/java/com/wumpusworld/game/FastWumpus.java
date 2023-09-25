@@ -1,8 +1,18 @@
 package com.wumpusworld.game;
 
 public class FastWumpus extends Moveable{
+    private boolean dead = false;
+
     FastWumpus(Position position) {
         super(position);
+    }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
     }
 
     @Override

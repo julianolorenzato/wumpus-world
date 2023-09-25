@@ -37,11 +37,20 @@ public class BoardPanel extends JPanel {
                     tile.setBackground(Color.blue);
                 } else {
                     if (currTile.isVisible()) {
-                        if (currTile.getGold() != null) {
+                        int wumpusLine = game.getWumpus().getPosition().getLine();
+                        int wumpusCol = game.getWumpus().getPosition().getColumn();
+                        int fastWumpusLine = game.getFastWumpus().getPosition().getLine();
+                        int fastWumpusCol = game.getFastWumpus().getPosition().getColumn();
+
+                        if (wumpusLine == i && wumpusCol == j) {
+                            tile.setBackground(Color.red);
+                        } else if (fastWumpusLine == i && fastWumpusCol == j) {
+                            tile.setBackground(Color.red);
+                        } else if (currTile.getGold() != null) {
                             tile.setBackground(Color.yellow);
                         } else if (currTile.getWood() != null) {
                             tile.setBackground(Color.magenta);
-                        } else if (currTile.getPit() != null) {
+                        } else if (currTile.getPit() != null && currTile.getPit().isOpen()) {
                             tile.setBackground(Color.green);
                         } else {
                             tile.setBackground(Color.lightGray);
@@ -50,18 +59,6 @@ public class BoardPanel extends JPanel {
                         tile.setBackground(Color.darkGray);
                     }
                 }
-//
-//                if (game.getBoard()[i][j].getPit() != null) {
-//                    tile.setBackground(Color.pink);
-//                }
-//
-//                if (game.getBoard()[i][j].getWood() != null) {
-//                    tile.setBackground(Color.magenta);
-//                }
-//
-//                if (game.getBoard()[i][j].getGold() != null) {
-//                    tile.setBackground(Color.yellow);
-//                }
 
                 this.add(tile);
             }

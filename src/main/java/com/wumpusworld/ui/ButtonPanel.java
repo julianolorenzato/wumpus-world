@@ -9,8 +9,8 @@ import java.awt.event.ActionListener;
 
 public class ButtonPanel extends JPanel implements ActionListener {
     Game game;
-    JButton up, down, left, right, flashlightUp, flashlightDown, flashlightLeft, flashlightRight;
-    JPanel movementPanel, actionPanel;
+    JButton up, down, left, right, flashlightUp, flashlightDown, flashlightLeft, flashlightRight, closePit, makeArrow, arrowUp, ArrowDown, ArrowLeft, ArrowRight;
+    JPanel movementPanel, actionPanel, pitPanel, arrowPanel;
     BoardPanel boardPanel;
     InfoPanel infoPanel;
 
@@ -28,7 +28,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
         JPanel movementPanel = new JPanel();
         this.add(movementPanel);
         movementPanel.setLayout(new BorderLayout());
-        movementPanel.setSize(200,200);
+        movementPanel.setSize(200, 200);
         up = new JButton("ir para cima");
         down = new JButton("ir para baixo");
         left = new JButton("ir para esquerda");
@@ -45,7 +45,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
         // action panel definition
         JPanel actionPanel = new JPanel();
         actionPanel.setLayout(new BorderLayout());
-        actionPanel.setSize(200,200);
+        actionPanel.setSize(200, 200);
         this.add(actionPanel);
         flashlightUp = new JButton("usar lanterna para cima");
         flashlightDown = new JButton("usar lanterna para baixo");
@@ -59,6 +59,21 @@ public class ButtonPanel extends JPanel implements ActionListener {
         actionPanel.add(flashlightDown, BorderLayout.SOUTH);
         actionPanel.add(flashlightLeft, BorderLayout.WEST);
         actionPanel.add(flashlightRight, BorderLayout.EAST);
+
+        // pit panel definition
+        JPanel pitPanel = new JPanel();
+        pitPanel.setLayout(new BorderLayout());
+        this.add(pitPanel);
+        closePit = new JButton("fechar poço próximo");
+        makeArrow = new JButton("criar nova flecha");
+        closePit.addActionListener(this);
+        pitPanel.add(closePit, BorderLayout.CENTER);
+
+        // arrow panel definition
+        JPanel arrowPanel = new JPanel();
+        arrowPanel.setLayout(new BorderLayout());
+        this.add(arrowPanel);
+
     }
 
     @Override
@@ -107,6 +122,12 @@ public class ButtonPanel extends JPanel implements ActionListener {
 
         if (e.getSource() == flashlightLeft) {
             this.game.revealTilesLeft();
+            this.boardPanel.updatePanel();
+            this.infoPanel.updatePanel();
+        }
+
+        if (e.getSource() == closePit) {
+            this.game.closePit();
             this.boardPanel.updatePanel();
             this.infoPanel.updatePanel();
         }

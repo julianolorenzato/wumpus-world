@@ -64,7 +64,7 @@ public class Tile {
     }
 
     public void removeWood() {
-        this.gold = null;
+        this.wood = null;
     }
 
     void closePit() {

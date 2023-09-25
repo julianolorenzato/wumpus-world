@@ -31,6 +31,14 @@ public class Game {
         return board;
     }
 
+    public Wumpus getWumpus() {
+        return wumpus;
+    }
+
+    public FastWumpus getFastWumpus() {
+        return fastWumpus;
+    }
+
     public Agent getAgent() {
         return agent;
     }
@@ -43,7 +51,7 @@ public class Game {
         for (Tile[] tilesLine : this.board) {
             System.out.print("[");
             for (Tile tile : tilesLine) {
-                System.out.print(tile.isBadSmell());
+                System.out.print(tile.isBreeze());
                 System.out.print(",");
             }
             System.out.println("]");
@@ -105,6 +113,29 @@ public class Game {
             }
         }
 
+        // put breeze
+        for (int i = 0; i < 5; i++) {
+            int line = coordinates.get("x")[i];
+            int col = coordinates.get("y")[i];
+
+            try {
+                tiles[line + 1][col].setBreeze(true);
+            } catch (Exception e) {
+            }
+            try {
+                tiles[line][col + 1].setBreeze(true);
+            } catch (Exception e) {
+            }
+            try {
+                tiles[line - 1][col].setBreeze(true);
+            } catch (Exception e) {
+            }
+            try {
+                tiles[line][col - 1].setBreeze(true);
+            } catch (Exception e) {
+            }
+        }
+
         return tiles;
     }
 
@@ -134,8 +165,19 @@ public class Game {
             throw new Error("O agente já se encontra no extremo norte do mapa");
         }
 
+        int agentLine = this.agent.getPosition().getLine();
+        int agentCol = this.agent.getPosition().getColumn();
+
+        Tile nextTile = this.board[agentLine - 1][agentCol];
+
+        if (nextTile.getPit() != null && nextTile.getPit().isOpen()) {
+            throw new Error("Existe um poço no caminho, feche-o ou o contorne");
+        }
+
         this.agent.moveUp();
         this.tryToPick();
+        this.randomMoveWumpus();
+        this.randomMoveFastWumpus();
         this.getBoard()[this.agent.getPosition().getLine()][this.agent.getPosition().getColumn()].setVisible(true);
     }
 
@@ -144,8 +186,19 @@ public class Game {
             throw new Error("O agente já se encontra no extremo sul do mapa");
         }
 
+        int agentLine = this.agent.getPosition().getLine();
+        int agentCol = this.agent.getPosition().getColumn();
+
+        Tile nextTile = this.board[agentLine + 1][agentCol];
+
+        if (nextTile.getPit() != null && nextTile.getPit().isOpen()) {
+            throw new Error("Existe um poço no caminho, feche-o ou o contorne");
+        }
+
         this.agent.moveDown();
         this.tryToPick();
+        this.randomMoveWumpus();
+        this.randomMoveFastWumpus();
         this.getBoard()[this.agent.getPosition().getLine()][this.agent.getPosition().getColumn()].setVisible(true);
     }
 
@@ -154,8 +207,19 @@ public class Game {
             throw new Error("O agente já se encontra no extremo leste do mapa");
         }
 
+        int agentLine = this.agent.getPosition().getLine();
+        int agentCol = this.agent.getPosition().getColumn();
+
+        Tile nextTile = this.board[agentLine][agentCol + 1];
+
+        if (nextTile.getPit() != null && nextTile.getPit().isOpen()) {
+            throw new Error("Existe um poço no caminho, feche-o ou o contorne");
+        }
+
         this.agent.moveRight();
         this.tryToPick();
+        this.randomMoveWumpus();
+        this.randomMoveFastWumpus();
         this.getBoard()[this.agent.getPosition().getLine()][this.agent.getPosition().getColumn()].setVisible(true);
     }
 
@@ -164,8 +228,19 @@ public class Game {
             throw new Error("O agente já se encontra no extremo oeste do mapa");
         }
 
+        int agentLine = this.agent.getPosition().getLine();
+        int agentCol = this.agent.getPosition().getColumn();
+
+        Tile nextTile = this.board[agentLine][agentCol - 1];
+
+        if (nextTile.getPit() != null && nextTile.getPit().isOpen()) {
+            throw new Error("Existe um poço no caminho, feche-o ou o contorne");
+        }
+
         this.agent.moveLeft();
         this.tryToPick();
+        this.randomMoveWumpus();
+        this.randomMoveFastWumpus();
         this.getBoard()[this.agent.getPosition().getLine()][this.agent.getPosition().getColumn()].setVisible(true);
     }
 
@@ -230,6 +305,137 @@ public class Game {
             }
 
             this.agent.items.remove(result.get());
+        }
+    }
+
+    private void resetBadSmell() {
+        for (Tile[] tilesLine : this.board) {
+            for (Tile tile : tilesLine) {
+                tile.setBadSmell(false);
+            }
+        }
+    }
+
+    private void randomMoveWumpus() {
+        int side = new Random().nextInt(4);
+
+        switch (side) {
+            case 0:
+                if (this.wumpus.getPosition().getLine() != 0)
+                    this.wumpus.moveUp();
+                break;
+            case 1:
+                if (this.wumpus.getPosition().getLine() != this.lines - 1)
+                    this.wumpus.moveDown();
+                break;
+            case 2:
+                if (this.wumpus.getPosition().getColumn() != 0)
+                    this.wumpus.moveLeft();
+                break;
+            case 3:
+                if (this.wumpus.getPosition().getLine() != this.columns - 1)
+                    this.wumpus.moveRight();
+                break;
+        }
+
+        this.resetBadSmell();
+
+        int wumpusLine = this.fastWumpus.getPosition().getLine();
+        int wumpusCol = this.fastWumpus.getPosition().getColumn();
+
+        try {
+            this.board[wumpusLine + 1][wumpusCol].setBadSmell(true);
+            this.board[wumpusLine][wumpusCol + 1].setBadSmell(true);
+            this.board[wumpusLine - 1][wumpusCol].setBadSmell(true);
+            this.board[wumpusLine][wumpusCol - 1].setBadSmell(true);
+        } catch (Exception e) {
+        }
+
+        if (this.agent.getPosition().samePosition(this.wumpus.getPosition())) {
+            this.agent.life -= 100;
+        }
+    }
+
+    private void randomMoveFastWumpus() {
+        int side = new Random().nextInt(4);
+        int fastWumpusLine = this.fastWumpus.getPosition().getLine();
+        int fastWumpusCol = this.fastWumpus.getPosition().getColumn();
+
+        switch (side) {
+            case 0:
+                if (fastWumpusLine > 1 && fastWumpusCol != this.columns - 1)
+                    this.fastWumpus.moveUp();
+                break;
+            case 1:
+                if (fastWumpusLine < this.lines - 2 && fastWumpusCol != 0)
+                    this.fastWumpus.moveDown();
+                break;
+            case 2:
+                if (fastWumpusLine != 0 && fastWumpusCol > 1)
+                    this.fastWumpus.moveLeft();
+                break;
+            case 3:
+                if (fastWumpusLine != this.lines - 1 && fastWumpusCol < this.columns - 2)
+                    this.fastWumpus.moveRight();
+        }
+
+        this.resetBadSmell();
+
+        fastWumpusLine = this.fastWumpus.getPosition().getLine();
+        fastWumpusCol = this.fastWumpus.getPosition().getColumn();
+
+        try {
+            this.board[fastWumpusLine + 1][fastWumpusCol].setBadSmell(true);
+            this.board[fastWumpusLine][fastWumpusCol + 1].setBadSmell(true);
+            this.board[fastWumpusLine - 1][fastWumpusCol].setBadSmell(true);
+            this.board[fastWumpusLine][fastWumpusCol - 1].setBadSmell(true);
+        } catch (Exception e) {
+        }
+
+        if (this.agent.getPosition().samePosition(this.fastWumpus.getPosition())) {
+            this.agent.life -= 50;
+        }
+    }
+
+    public void closePit() {
+        int agentLine = this.agent.getPosition().getLine();
+        int agentCol = this.agent.getPosition().getColumn();
+
+        Optional<Item> result = this.agent.items.stream().filter(item -> item instanceof WoodPlank).findFirst();
+
+        try {
+            if (result.isPresent()) {
+                if (this.board[agentLine + 1][agentCol].getPit() != null) {
+                    this.board[agentLine + 1][agentCol].closePit();
+                    this.agent.items.remove(result.get());
+                } else if (this.board[agentLine][agentCol + 1].getPit() != null) {
+                    this.board[agentLine][agentCol + 1].closePit();
+                    this.agent.items.remove(result.get());
+                } else if (this.board[agentLine - 1][agentCol].getPit() != null) {
+                    this.board[agentLine - 1][agentCol].closePit();
+                    this.agent.items.remove(result.get());
+                } else if (this.board[agentLine][agentCol - 1].getPit() != null) {
+                    this.agent.items.remove(result.get());
+                }
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    public void makeArrow() {
+        Optional<Item> result = this.agent.items.stream().filter(item -> item instanceof WoodPlank).findFirst();
+
+        if (result.isPresent()) {
+            this.agent.items.remove(result.get());
+            this.agent.items.add(new Arrow());
+        }
+    }
+
+    public void throwArrow() {
+        Optional<Item> result = this.agent.items.stream().filter(item -> item instanceof Arrow).findFirst();
+
+        if (result.isPresent()) {
+            // THROW ARROW
         }
     }
 }
